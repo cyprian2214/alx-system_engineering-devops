@@ -1,32 +1,48 @@
-Postmortem: Database Performance Degradation Incident
-Issue Summary:
-	Duration: May 15, 2024, from 10:00 AM to 12:30 PM (EDT)
-	Impact: The primary user database experienced significant performance degradation, causing slow response times for 60% of users. Affected users experienced delays of up to 10 seconds when accessing the service.
-	Root Cause: A misconfigured database index on a high-traffic table led to inefficient query execution, severely impacting performance.
-Timeline:
-	10:00 AM: Issue detected via automated monitoring alert indicating increased response times.
-	10:05 AM: Initial investigation by the on-call engineer confirmed the degradation in database performance.
-	10:10 AM: Assumed the issue was due to high traffic volume; scaled up application servers.
-	10:30 AM: Traffic assumption proved incorrect; database queries continued to lag.
-	10:45 AM: Noticed high CPU usage on the primary database server.
-	11:00 AM: Database team escalated the issue; began examining recent changes to the database schema.
-	11:15 AM: Misleading path: suspected a potential network issue between application servers and the database.
-	11:30 AM: Further investigation ruled out network issues; focused back on database performance.
-	11:45 AM: Identified recent index change on a high-traffic table as the probable cause.
-	12:00 PM: Reverted the index change; observed immediate improvement in query performance.
-	12:30 PM: Full service restoration confirmed; performance metrics returned to normal.
-Root Cause and Resolution:
-	Root Cause: The root cause was an inefficient index configuration on a frequently accessed table. A recent database schema update introduced a new index intended to optimize query performance. However, this index was not optimized for the actual query patterns, leading to full table scans instead of the intended index lookups.
-	Resolution: The issue was resolved by reverting the index to its previous configuration. After the reversion, query performance returned to normal as the database resumed using the optimized index paths.
-Corrective and Preventative Measures:
-Improvements:
-	Enhance pre-deployment testing to include query performance benchmarks.
-	Implement automated alerts for abnormal increases in query execution times.
-	Conduct regular review sessions of database schema changes with a focus on performance impact.
-Tasks:
-	Task 1: Develop and integrate a comprehensive query performance monitoring tool.
-	Task 2: Create a standardized procedure for evaluating and approving database schema changes.
-	Task 3: Conduct training sessions for the engineering team on database indexing best practices.
-	Task 4: Add detailed logging for database query execution times and patterns.
-	Task 5: Schedule bi-weekly review meetings to discuss recent database changes and their impact.
-By implementing these measures, we aim to prevent similar issues in the future and ensure more robust database performance management.
+# Postmortem: The Great Database Debacle of 2024
+
+## Issue Summary
+- **Duration:** May 15, 2024, from 10:00 AM to 12:30 PM (EDT)
+- **Impact:** Users experienced response times that made molasses in January seem fast—60% of our users were affected, waiting up to 10 seconds per query.
+- **Root Cause:** A well-intentioned, but ultimately disastrous, database index misconfiguration.
+
+![Database Catastrophe](https://www.example.com/funny-database-catastrophe.jpg)
+
+## Timeline
+- **10:00 AM:** *ALERT!* Automated monitoring starts screaming about response times.
+- **10:05 AM:** On-call engineer, eyes still blurry from coffee, confirms: things are slooow.
+- **10:10 AM:** “It’s the traffic!” they shout. More servers deployed.
+- **10:30 AM:** Servers scaled, yet users still wait... and wait... and wait.
+- **10:45 AM:** Primary database server is working harder than a cat trying to avoid a bath.
+- **11:00 AM:** Database team, capes on, dive into the mystery.
+- **11:15 AM:** “Maybe it’s a network issue?” they ponder. Nope.
+- **11:30 AM:** Network fine, eyes back on the database. Light bulb moment approaching!
+- **11:45 AM:** Suspicious new index found, recent as Aunt Marge’s potato salad.
+- **12:00 PM:** Index rolled back. Queue instant relief.
+- **12:30 PM:** All systems go! Users happy. Engineers slightly traumatized but wiser.
+
+## Root Cause and Resolution
+**Root Cause:** The problem stemmed from a new database index that was supposed to speed things up but instead threw a spanner in the works. This index, intended to optimize queries, caused full table scans, turning our database into a lumbering giant.
+
+**Resolution:** Rolling back the offending index restored our database’s former glory. As soon as the old index was reinstated, query performance snapped back to normal, and the users could once again frolic through our service unimpeded.
+
+## Corrective and Preventative Measures
+**What We Can Improve:**
+- Implement better pre-deployment query performance benchmarks.
+- Set up automated alerts for unusual query execution times.
+- Regularly review schema changes for performance impacts.
+
+**Tasks:**
+- **Task 1:** Develop and integrate a comprehensive query performance monitoring tool. 
+  - *Status:* In progress
+  - ![Progress Chart](https://www.example.com/progress-chart.png)
+- **Task 2:** Standardize procedures for evaluating and approving database schema changes. 
+  - *Status:* To be started
+- **Task 3:** Conduct training on database indexing best practices. 
+  - *Status:* Scheduled
+- **Task 4:** Add detailed logging for database query times and patterns. 
+  - *Status:* Completed
+- **Task 5:** Schedule bi-weekly review meetings for recent database changes. 
+  - *Status:* In progress
+
+### Conclusion
+To prevent another database disaster, we've taken a comprehensive approach to bolster our systems and processes. Our engineers, now armed with lessons learned and a touch of PTSD, are ready to ensure smoother sailing ahead. Keep your eyes peeled for more thrilling tales from the trenches of tech!
